@@ -1,0 +1,156 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ── Proxie.cards — deep dark theme + electric blue accent ── */
+
+  /* Backgrounds — layered dark */
+  --background:      oklch(0.07 0.008 260);    /* #0a0b10 almost black-blue */
+  --surface:         oklch(0.11 0.010 260);    /* elevated panel */
+  --surface-raised:  oklch(0.15 0.012 260);    /* card/modal surface */
+
+  /* Text */
+  --foreground:      oklch(0.96 0.004 250);    /* near-white */
+  --muted-foreground: oklch(0.55 0.008 250);   /* dimmed text */
+
+  /* shadcn tokens mapped to the dark palette */
+  --card:            oklch(0.11 0.010 260);
+  --card-foreground: oklch(0.96 0.004 250);
+  --popover:         oklch(0.13 0.012 260);
+  --popover-foreground: oklch(0.96 0.004 250);
+  --primary:         oklch(0.58 0.22 250);     /* electric blue */
+  --primary-foreground: oklch(0.98 0 0);
+  --secondary:       oklch(0.16 0.012 260);
+  --secondary-foreground: oklch(0.80 0.006 250);
+  --muted:           oklch(0.16 0.010 260);
+  --accent:          oklch(0.16 0.012 260);
+  --accent-foreground: oklch(0.96 0.004 250);
+
+  /* ── Electric blue — replaces gold ── */
+  --accent-blue:      oklch(0.58 0.22 250);    /* vivid electric blue */
+  --accent-blue-dim:  oklch(0.45 0.18 250);    /* darker blue for hover */
+  --accent-blue-glow: oklch(0.58 0.22 250 / 0.20);  /* glow effect */
+  --accent-blue-muted: oklch(0.58 0.22 250 / 0.12); /* subtle bg tint */
+
+  /* Keep gold alias so existing references don't break — map to blue */
+  --accent-gold:       oklch(0.58 0.22 250);
+  --accent-gold-light: oklch(0.58 0.22 250 / 0.12);
+
+  /* Borders & inputs */
+  --border:          oklch(0.22 0.010 260);
+  --input:           oklch(0.16 0.010 260);
+  --ring:            oklch(0.58 0.22 250);
+
+  --destructive:     oklch(0.55 0.20 25);
+  --destructive-foreground: oklch(1.00 0 0);
+
+  --radius: 0.5rem;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter), 'Inter', system-ui, sans-serif;
+  --font-display: var(--font-display), 'Barlow Condensed', system-ui, sans-serif;
+
+  --color-background:       var(--background);
+  --color-foreground:       var(--foreground);
+  --color-surface:          var(--surface);
+  --color-surface-raised:   var(--surface-raised);
+  --color-card:             var(--card);
+  --color-card-foreground:  var(--card-foreground);
+  --color-popover:          var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary:          var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary:        var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:            var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent:           var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  /* Electric blue tokens */
+  --color-accent-blue:      var(--accent-blue);
+  --color-accent-blue-dim:  var(--accent-blue-dim);
+  --color-accent-blue-glow: var(--accent-blue-glow);
+  --color-accent-blue-muted: var(--accent-blue-muted);
+
+  /* Gold alias — maps to blue to keep existing classes working */
+  --color-accent-gold:      var(--accent-gold);
+  --color-accent-gold-light: var(--accent-gold-light);
+
+  --color-destructive:      var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border:           var(--border);
+  --color-input:            var(--input);
+  --color-ring:             var(--ring);
+
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+  }
+
+  /* Dark scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: oklch(0.28 0.010 260);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: oklch(0.58 0.22 250 / 0.6);
+  }
+}
+
+/* ── Card fan animation ─────────────────────────────────────────────────────── */
+@keyframes float-card {
+  0%, 100% { transform: var(--card-base-transform) translateY(0px); }
+  50%       { transform: var(--card-base-transform) translateY(-8px); }
+}
+
+.card-fan-item {
+  animation: float-card 3s ease-in-out infinite;
+}
+
+/* ── Floating deck button ───────────────────────────────────────────────────── */
+@keyframes deck-pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+@keyframes plus-fly {
+  0%   { opacity: 1; transform: translate(0, 0) scale(1); }
+  50%  { opacity: 1; transform: translate(0, -30px) scale(1.15); }
+  100% { opacity: 0; transform: translate(0, -60px) scale(0.7); }
+}
+
+/* ── Hero section glow ─────────────────────────────────────────────────────── */
+.hero-glow {
+  background: radial-gradient(ellipse 80% 50% at 50% -10%, oklch(0.58 0.22 250 / 0.15), transparent 70%);
+}
+
+/* ── Import card-by-card animation ─────────────────────────────────────────── */
+@keyframes card-in {
+  0%   { opacity: 0; transform: translateY(10px) scale(0.88) rotateY(-15deg); }
+  60%  { opacity: 1; transform: translateY(-2px) scale(1.03) rotateY(3deg); }
+  100% { opacity: 1; transform: translateY(0) scale(1) rotateY(0deg); }
+}
+
+.animate-card-in {
+  animation: card-in 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
